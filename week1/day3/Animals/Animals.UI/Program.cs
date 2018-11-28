@@ -3,6 +3,20 @@ using Animals.Library;
 
 namespace Animals.UI
 {
+
+    /*
+    # make a new solution and add two new projects to it
+    mkdir Animals
+    cd Animals
+    dotnet new sln --name Animals
+    dotnet new console -o Animals.UI
+    dotnet sln add Animals.UI
+    dotnet new classlib -o Animals.Library
+    dotnet sln add Animals.Library
+    cd Animals.UI
+    dotnet add reference ../Animals.Library
+    */
+
     class Program
     {
         // your entry point needs a static void Main(string[] args) method

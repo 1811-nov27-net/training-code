@@ -40,6 +40,7 @@ namespace LINQAndTesting.Tests
         [InlineData(new string[] { }, null)]
         [InlineData(new string[] { "ab", "b2" }, "ab")]
         [InlineData(new string[] { "ab", null, "a" }, "ab")]
+        [InlineData(new string[] { "" }, "")]
         public void LongestShouldReturnLongest(string[] items, string expected)
         {
             // arrange
@@ -59,5 +60,15 @@ namespace LINQAndTesting.Tests
         // test-driven development:
         // step 1: write test(s) that fail
         // step 2: write the code to make the test(s) pass.
+
+        [Fact]
+        public void EmptyShouldBeEmpty()
+        {
+            var coll = new MyCollection();
+
+            var isEmpty = coll.Empty(); // extension method that appears on the class
+
+            Assert.True(isEmpty);
+        }
     }
 }

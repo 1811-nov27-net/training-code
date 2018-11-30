@@ -78,8 +78,8 @@ namespace MemoryList.Library
         /// </exception>
         public new T this[int index]
         {
-            get => base[index];
-            set
+            get => base[index]; // for access (e.g. var x = list[0])
+            set                 // for assignment (e.g. list[0] = x)
             {
                 base[index] = value;
                 _everContained.Add(value);
@@ -95,7 +95,7 @@ namespace MemoryList.Library
         /// </param>
         public new void Add(T item)
         {
-            base.Add(item);
+            base.Add(item); // call the parent class's implementation
 
             _everContained.Add(item);
         }

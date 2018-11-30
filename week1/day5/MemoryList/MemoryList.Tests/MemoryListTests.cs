@@ -69,7 +69,7 @@ namespace MemoryList.Tests
         public void OneItemAddedAndRemovedWithUpcastingShouldHaveBeenContained(string item)
         {
             var sut = new MemoryList<string>();
-            List<string> sutAsList = new MemoryList<string>(); // implicit upcasting
+            List<string> sutAsList = sut; // implicit upcasting
             sutAsList.Add(item);
             sutAsList.Remove(item);
             // because of using "new" and not "override", that ran List's "add" and "remove",

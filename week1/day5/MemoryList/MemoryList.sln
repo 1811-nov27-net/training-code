@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryList.Tests", "MemoryList.Tests\MemoryList.Tests.csproj", "{B4CD3407-17B7-4939-88E8-1846EB58F5EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryList.Library", "MemoryList.Library\MemoryList.Library.csproj", "{A525EEDD-218E-4220-8B4B-88DB170843C0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B4CD3407-17B7-4939-88E8-1846EB58F5EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4CD3407-17B7-4939-88E8-1846EB58F5EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4CD3407-17B7-4939-88E8-1846EB58F5EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4CD3407-17B7-4939-88E8-1846EB58F5EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A525EEDD-218E-4220-8B4B-88DB170843C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A525EEDD-218E-4220-8B4B-88DB170843C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A525EEDD-218E-4220-8B4B-88DB170843C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A525EEDD-218E-4220-8B4B-88DB170843C0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D5B532A6-B114-4FD8-8162-C99AEB99450A}
+	EndGlobalSection
+EndGlobal

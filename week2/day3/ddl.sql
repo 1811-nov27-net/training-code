@@ -21,7 +21,7 @@ DROP TABLE PS.Pizza;
 
 CREATE TABLE PS.Pizza
 (
-	PizzaID INT NOT NULL,
+	PizzaID INT IDENTITY(1,1) NOT NULL, -- an identity column that starts at 1 and increments by 1
 	Name NVARCHAR(100) NOT NULL,
 	CrustID INT NOT NULL,
 	ModifiedDate DATETIME2 NOT NULL,
@@ -89,7 +89,9 @@ ALTER TABLE PS.Pizza
 INSERT INTO PS.Crust (CrustID, Name) VALUES
 	(1, 'Plain');
 INSERT INTO PS.Pizza (PizzaID, Name, CrustID, ModifiedDate) VALUES
-	(1, 'Standard', 1, '2018-01-01');
+	(1, 'Standard', 1, '2018-01-01'); -- error, can't insert explicit values to identity column
+INSERT INTO PS.Pizza (Name, CrustID, ModifiedDate) VALUES
+	('Standard', 1, '2018-01-01');
 SELECT * FROM PS.Crust;
 
 -- demo cascade on delete - also deletes the pizza using this crust
@@ -250,3 +252,25 @@ SELECT * FROM PS.Crust WHERE Name = PS.FirstCrustName();
 
 -- with explicit "BEGIN TRANSACTION" etc, we can have multi-statement transactions.
 
+
+-- Triggers
+
+-- trigger that will update the "modified date" any time someone updates a row,
+-- automatically.
+GO
+CREATE TRIGGER PS.TR_Pizza ON PS.Pizza
+AFTER UPDATE
+AS
+BEGIN
+	-- in a trigger, you have access to two special tables
+	-- called inserted and deleted.
+	-- (like git, we think of updates as an insert and a delete.)
+	UPDATE PS.Pizza
+	SET ModifiedDate = GETDATE()
+	WHERE PizzaID IN (SELECT PizzaID FROM inserted);
+END
+
+UPDATE PS.Pizza
+SET Name = 'New Pizza';
+
+-- triggers also support INSTEAD OF and BEFORE where i put AFTER

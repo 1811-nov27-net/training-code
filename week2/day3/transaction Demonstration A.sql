@@ -11,14 +11,14 @@ IF OBJECT_ID('dbo.SimpleOrders','U') IS NOT NULL
 GO
 CREATE TABLE dbo.SimpleOrders(
 	orderid int IDENTITY(1,1) NOT NULL PRIMARY KEY,
-	custid int NOT NULL FOREIGN KEY REFERENCES Sales.Customers(custid),
-	empid int NOT NULL FOREIGN KEY REFERENCES HR.Employees(empid),
+	custid int NOT NULL FOREIGN KEY REFERENCES SalesLT.Customer(customerid),
+	empid int NOT NULL FOREIGN KEY REFERENCES SalesLT.Customer(customerid),
 	orderdate datetime NOT NULL
 );
 GO
 CREATE TABLE dbo.SimpleOrderDetails(
 	orderid int NOT NULL FOREIGN KEY REFERENCES dbo.SimpleOrders(orderid),
-	productid int NOT NULL FOREIGN KEY REFERENCES Production.Products(productid),
+	productid int NOT NULL FOREIGN KEY REFERENCES SalesLT.Product(productid),
 	unitprice money NOT NULL,
 	qty smallint NOT NULL,
  CONSTRAINT PK_OrderDetails PRIMARY KEY (orderid, productid)
@@ -29,10 +29,10 @@ GO
 -- NOTE: THIS STEP WILL CAUSE AN ERROR
 
 BEGIN TRY
-	INSERT INTO dbo.SimpleOrders(custid, empid, orderdate) VALUES (68,9,'2006-07-12');
-	INSERT INTO dbo.SimpleOrders(custid, empid, orderdate) VALUES (88,3,'2006-07-15');
-	INSERT INTO dbo.SimpleOrderDetails(orderid,productid,unitprice,qty) VALUES (1, 2,15.20,20);
-	INSERT INTO dbo.SimpleOrderDetails(orderid,productid,unitprice,qty) VALUES (999,77,26.20,15);
+	INSERT INTO dbo.SimpleOrders(custid, empid, orderdate) VALUES (70,10,'2006-07-12');
+	INSERT INTO dbo.SimpleOrders(custid, empid, orderdate) VALUES (70,10,'2006-07-15');
+	INSERT INTO dbo.SimpleOrderDetails(orderid,productid,unitprice,qty) VALUES (1, 680,15.20,20);
+	INSERT INTO dbo.SimpleOrderDetails(orderid,productid,unitprice,qty) VALUES (999,680,26.20,15);
 END TRY
 BEGIN CATCH
 	SELECT ERROR_NUMBER() AS ErrNum, ERROR_MESSAGE() AS ErrMsg;

@@ -117,3 +117,136 @@ ALTER TABLE PS.Pizza
 -- the row is updated
 
 SELECT * FROM PS.Pizza;
+
+-- aggregate functions
+--    COUNT
+--    SUM
+--    AVG (average)
+--    MIN
+--    MAX
+
+-- Views
+-- views are not tables, but they can be treated like read-only tables.
+-- they are like "computed columns" but for a whole table.
+
+SELECT * FROM PS.Pizza;
+SELECT * FROM PS.Crust;
+
+GO
+CREATE VIEW PS.ActivePizzas
+AS
+SELECT CrustID, Name, InternalName
+FROM PS.Crust
+WHERE Active = 1;
+
+SELECT * FROM PS.ActivePizzas;
+
+DELETE FROM PS.ActivePizzas;
+
+
+-- user-defined functions
+GO
+CREATE FUNCTION PS.FirstPizzaName()
+RETURNS NVARCHAR(100)
+AS
+BEGIN
+	DECLARE @ret NVARCHAR(100);
+
+	SELECT TOP(1) @ret = Name
+	FROM PS.Pizza;
+
+	RETURN @ret;
+END
+
+SELECT PS.FirstPizzaName(); -- returns 'Standard' (in my case)
+
+-- function to return the name of the first crust with the given "active" status.
+CREATE FUNCTION PS.FirstCrustName(@status BIT)
+RETURNS NVARCHAR(100)
+AS
+BEGIN
+	DECLARE @ret NVARCHAR(100);
+
+	SELECT TOP(1) @ret = Name
+	FROM PS.Crust
+	WHERE Active = @status;
+
+	RETURN @ret;
+END
+
+SELECT PS.FirstCrustName(1); -- returns 'Plain' (in my case)
+SELECT PS.FirstCrustName(0); -- returns NULL
+
+-- user-defined functions can be table-valued (return value is a whole table)
+GO
+CREATE FUNCTION PS.AllNames()
+RETURNS TABLE
+AS
+	RETURN SELECT Name FROM PS.Pizza UNION SELECT Name FROM PS.Crust;
+
+SELECT * FROM PS.AllNames(); -- returns all pizza and crust names in the DB as a 1-column table
+
+-- functions are not allowed to modify the database / insert rows, etc.
+-- they are read-only access
+
+-- if we want to modify the database in this encapsulated kind of way, 
+-- we use "stored procedures".
+
+-- functions can be used in SELECT clause and things like that, but procedures can't.
+GO
+DROP PROCEDURE PS.ChangePizzaNames;
+GO
+CREATE PROCEDURE PS.ChangePizzaNames(@newname NVARCHAR(100))
+AS
+BEGIN
+	BEGIN TRY
+		IF (EXISTS (SELECT * FROM PS.Pizza)) -- if there are any rows in the table
+		BEGIN
+			UPDATE PS.Pizza
+			SET Name = @newname;
+		END
+		ELSE
+		BEGIN
+			RAISERROR('No pizzas found', 16, 1)
+		END
+	END TRY
+	BEGIN CATCH
+		PRINT 'unable to change pizza names for reason:'
+		PRINT ERROR_MESSAGE();
+	END CATCH
+END
+
+EXECUTE PS.ChangePizzaNames 'Great Pizza';
+
+TRUNCATE TABLE PS.Pizza;
+
+EXECUTE PS.ChangePizzaNames 'Great Pizza';
+
+-- you can use functions in select statements and where clauses etc.
+-- but you can't do that with procedures
+SELECT * FROM PS.Crust WHERE Name = PS.FirstCrustName();
+
+-- transaction
+-- a transaction is a set of statements which follow the ACID properties
+--   A atomic / atomicity
+--      a transaction must be all-or-nothing. must not be allowed to partially succeed and then fail.
+--      if there is a failure, we must be returned to the original state.
+--   C consistent / consistency
+--      a transaction is not allowed to violate DB constraints or referential integrity
+--   I isolated / isolation
+--      the behavior of one transaction should not interfere with that of another transaction
+--      each transaction should be able to think of itself as the only one currently running
+--      we compromise on "isolated" part of ACID heavily in practice
+--   D durable / durability
+--      effects/result must not only be in "volatile memory", they must be persisted to disk
+--      or some permanent storage.
+
+-- in SQL Server, we have four isolation levels to give us flexibility in isolation
+--  why? because full isolation is lower performance (and higher possibility of deadlock)
+--     read_uncommitted, read_committed (default), repeatable, serializable
+
+-- every SQL statement by default is already a transaction in itself -
+-- an error part-way through will result in rolling back anything changed up to that point.
+
+-- with explicit "BEGIN TRANSACTION" etc, we can have multi-statement transactions.
+

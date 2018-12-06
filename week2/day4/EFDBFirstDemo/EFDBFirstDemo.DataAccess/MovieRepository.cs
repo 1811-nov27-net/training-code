@@ -6,6 +6,13 @@ namespace EFDBFirstDemo.DataAccess
 {
     public class MovieRepository : IMovieRepository
     {
+        public MoviesDBContext Db { get; }
+
+        public MovieRepository(MoviesDBContext db)
+        {
+            Db = db;
+        }
+
         public void CreateMovie(Movie movie)
         {
             throw new NotImplementedException();

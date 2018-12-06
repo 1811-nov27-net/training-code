@@ -112,4 +112,4 @@ FROM SalesLT.Customer AS c
 			INNER JOIN SalesLT.Customer AS c ON soh.CustomerID = c.CustomerID
 		GROUP BY a.CountryRegion, c.CustomerID
 	) AS sq
-		ON c.CustomerID = sq.CustomerID AND Rank = 1;
+		ON c.CustomerID = sq.CustomerID AND sq.Rank = 1;

@@ -11,10 +11,17 @@ add reference fromt he startup project to the data access project.
 open Package Manager console under View -> Other Windows
 
 run:
-    Scaffold-DbContext "<connection string goes here>" Microsoft.EntityFrameworkCore.SqlServer -Project EFDBFirstDemo.DataAccess
+    Scaffold-DbContext "<connection string goes here>" Microsoft.EntityFrameworkCore.SqlServer -Project EFDBFirstDemo.DataAccess -Force
 
 remove generated connection string from DBContext file.
 
+....
+
+when we make changes to the DB, we should re-scaffold our data access classes.
+(running the Scaffold command requires that your solution compiles.)
+when we do that, we need to have "-Force" at the end of our command, to overwrite the existing files.
+
+then, we have to delete that connection string from the dbcontext class again.
 
 ---------------------
 

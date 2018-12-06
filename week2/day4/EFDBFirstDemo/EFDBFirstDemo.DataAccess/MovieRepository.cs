@@ -17,8 +17,10 @@ namespace EFDBFirstDemo.DataAccess
 
         // the ID should be left at default zero
         // so the context knows that's new, and so the DB can auto-generated that IDENTITY value
-        public void CreateMovie(Movie movie)
+        public void CreateMovie(Movie movie, string withGenre)
         {
+            Genre trackedGenre = Db.Genre.First(g => g.Name == withGenre);
+            movie.Genre = trackedGenre;
             Db.Add(movie);
         }
 

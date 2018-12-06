@@ -27,6 +27,9 @@ namespace EFDBFirstDemo.UI
             Console.WriteLine();
 
             PrintMovies();
+            Console.WriteLine();
+
+            AccessWithRepo();
         }
 
         static void PrintMovies()
@@ -110,6 +113,23 @@ namespace EFDBFirstDemo.UI
 
                     // because actionGenre object is tracked, the context sees any changes and applies them.
                     db.SaveChanges();
+                }
+            }
+        }
+
+        static void AccessWithRepo()
+        {
+            using (var db = new MoviesDBContext(options))
+            {
+                IMovieRepository movieRepo = new MovieRepository(db);
+
+                movieRepo.CreateMovie(new Movie { Name = "Harry Potter" }, "Action/Adventure");
+
+                movieRepo.SaveChanges();
+
+                foreach (var movie in movieRepo.GetAllMoviesWithGenres())
+                {
+                    Console.WriteLine(movie.Name);
                 }
             }
         }

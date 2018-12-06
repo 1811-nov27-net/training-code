@@ -1,0 +1,17 @@
+add Microsoft.EntityFrameworkCore.SqlServer package to the data access project
+
+add Microsoft.EntityFrameworkCore.Tools and Microsoft.EntityFrameworkCore.Design to the startup project
+
+add reference fromt he startup project to the data access project.
+
+open Package Manager console under View -> Other Windows
+
+run:
+    Scaffold-DbContext "<connection string goes here>" Microsoft.EntityFrameworkCore.SqlServer -Project EFDBFirstDemo.DataAccess
+
+remove generated connection string from DBContext file.
+
+
+---------------------
+
+we used Scaffold-DBContext to

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace EFDBFirstDemo.DataAccess
@@ -10,44 +12,66 @@ namespace EFDBFirstDemo.DataAccess
 
         public MovieRepository(MoviesDBContext db)
         {
-            Db = db;
+            Db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
+        // the ID should be left at default zero
+        // so the context knows that's new, and so the DB can auto-generated that IDENTITY value
         public void CreateMovie(Movie movie)
         {
-            throw new NotImplementedException();
+            Db.Add(movie);
         }
 
         public void DeleteMovie(Movie movie)
         {
-            throw new NotImplementedException();
+            // Find is the fastest way to get an entity by primary key
+            // especially if it's already in memory.
+            Movie trackedMovie = Db.Movie.Find(movie.Id);
+            if (trackedMovie == null)
+            {
+                throw new ArgumentException("no such movie id", nameof(movie.Id));
+            }
+            Db.Remove(trackedMovie);
         }
 
         // based on the movie's ID, we're going to update the DB's movie
         // with this one's property values.
         public void EditMovie(Movie movie)
         {
-            throw new NotImplementedException();
+            // would add it if it didn't exist
+            Db.Update(movie);
+
+            // (or this way... there can be issues with having multiple tracked entities of the same ID
+            // so we use Find to get the currently tracked one if there is one
+            Movie trackedMovie = Db.Movie.Find(movie.Id);
+            Db.Entry(trackedMovie).CurrentValues.SetValues(movie);
         }
 
         public IList<Movie> GetAllMovies()
         {
-            throw new NotImplementedException();
+            // we don't want to use the EF tracking behavior outside this class,
+            // so AsNoTracking will allow that and also remove the performance overhead of it
+            return Db.Movie.AsNoTracking().ToList();
         }
 
         public IList<Movie> GetAllMoviesWithGenres()
         {
-            throw new NotImplementedException();
+            return Db.Movie.Include(m => m.Genre).AsNoTracking().ToList();
         }
 
         public Movie GetMovieById(int id)
         {
-            throw new NotImplementedException();
+            return Db.Movie.Find(id);
         }
 
         public Movie GetMovieByName(string name)
         {
-            throw new NotImplementedException();
+            return Db.Movie.First(m => m.Name == name);
+        }
+
+        public void SaveChanges()
+        {
+            Db.SaveChanges();
         }
     }
 }

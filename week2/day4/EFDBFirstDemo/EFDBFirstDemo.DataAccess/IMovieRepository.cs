@@ -25,5 +25,7 @@ namespace EFDBFirstDemo.DataAccess
         void EditMovie(Movie movie);
 
         void CreateMovie(Movie movie);
+
+        void SaveChanges();
     }
 }

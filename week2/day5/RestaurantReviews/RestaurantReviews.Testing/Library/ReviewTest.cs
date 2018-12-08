@@ -1,12 +1,10 @@
-﻿using RestaurantReviews.Library.Models;
+﻿using RestaurantReviews.Library;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
-namespace RestaurantReviews.Testing.Library.Models
+namespace RestaurantReviews.Testing.Library
 {
-    public class ReviewTest
+    public class ReviewTests
     {
         readonly Review review = new Review();
 

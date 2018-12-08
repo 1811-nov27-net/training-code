@@ -2,7 +2,6 @@ add Microsoft.EntityFrameworkCore.SqlServer package to the data access project
 
 add:
     - Microsoft.EntityFrameworkCore.Tools
-    - Microsoft.EntityFrameworkCore.Design
     - Microsoft.EntityFrameworkCore.SqlServer
 to the startup project
 

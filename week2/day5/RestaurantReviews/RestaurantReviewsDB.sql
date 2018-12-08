@@ -1,4 +1,4 @@
--- Scaffold-DbContext -Connection "Server=tcp:escalona-1806.database.windows.net,1433;Initial Catalog=RestaurantReviewsDB;Persist Security Info=False;User ID={my_username};Password={my_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" -Provider Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Project RestaurantReviews.Context -StartupProject RestaurantReviews.Context -Force
+-- Scaffold-DbContext -Connection <connection_string> -Provider Microsoft.EntityFrameworkCore.SqlServer -Project RestaurantReviews.Context -Force
 
 CREATE SCHEMA RR;
 GO

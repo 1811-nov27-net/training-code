@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RestaurantReviews.Context.Models
+namespace RestaurantReviews.Context
 {
     public partial class Restaurant
     {
@@ -13,6 +13,6 @@ namespace RestaurantReviews.Context.Models
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public ICollection<Review> Review { get; set; }
+        public virtual ICollection<Review> Review { get; set; }
     }
 }

@@ -1,16 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RestaurantReviews.Context.Models;
-using RestaurantReviews.Library.Models;
+using RestaurantReviews.Library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RestaurantReviews.Library.Repositories
+namespace RestaurantReviews.Context
 {
     /// <summary>
     /// A repository managing data access for restaurant objects and their review members.
     /// </summary>
-    public class RestaurantRepository
+    /// <remarks>
+    /// This class ought to have better exception handling and logging.
+    /// </remarks>
+    public class RestaurantRepository : IRestaurantRepository
     {
         private readonly RestaurantReviewsDBContext _db;
 
@@ -27,7 +29,7 @@ namespace RestaurantReviews.Library.Repositories
         /// Get all restaurants with deferred execution.
         /// </summary>
         /// <returns>The collection of restaurants</returns>
-        public IEnumerable<Models.Restaurant> GetRestaurants()
+        public IEnumerable<Library.Restaurant> GetRestaurants()
         {
             // disable pointless tracking for performance
             return Mapper.Map(_db.Restaurant.Include(r => r.Review).AsNoTracking());
@@ -37,7 +39,7 @@ namespace RestaurantReviews.Library.Repositories
         /// Add a restaurant, including any associated reviews.
         /// </summary>
         /// <param name="restaurant">The restaurant</param>
-        public void AddRestaurant(Models.Restaurant restaurant)
+        public void AddRestaurant(Library.Restaurant restaurant)
         {
             _db.Add(Mapper.Map(restaurant));
         }
@@ -55,11 +57,11 @@ namespace RestaurantReviews.Library.Repositories
         /// Update a restaurant. Will not process any changes to its reviews.
         /// </summary>
         /// <param name="restaurant">The restaurant with changed values</param>
-        public void UpdateRestaurant(Models.Restaurant restaurant)
+        public void UpdateRestaurant(Library.Restaurant restaurant)
         {
             // calling Update would mark every property as Modified.
             // this way will only mark the changed properties as Modified.
-            _db.Entry(_db.Review.Find(restaurant.Id)).CurrentValues.SetValues(Mapper.Map(restaurant));
+            _db.Entry(_db.Restaurant.Find(restaurant.Id)).CurrentValues.SetValues(Mapper.Map(restaurant));
         }
 
         /// <summary>
@@ -67,7 +69,7 @@ namespace RestaurantReviews.Library.Repositories
         /// </summary>
         /// <param name="review">The review</param>
         /// <param name="restaurant">The restaurant (or null if none)</param>
-        public void AddReview(Models.Review review, Models.Restaurant restaurant)
+        public void AddReview(Library.Review review, Library.Restaurant restaurant)
         {
             if (restaurant != null)
             {
@@ -96,7 +98,7 @@ namespace RestaurantReviews.Library.Repositories
         /// Update a review.
         /// </summary>
         /// <param name="review">The review with changed values</param>
-        public void UpdateReview(Models.Review review)
+        public void UpdateReview(Library.Review review)
         {
             _db.Entry(_db.Review.Find(review.Id)).CurrentValues.SetValues(Mapper.Map(review));
         }

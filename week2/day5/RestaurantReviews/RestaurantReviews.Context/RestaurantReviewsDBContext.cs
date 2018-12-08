@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace RestaurantReviews.Context.Models
+namespace RestaurantReviews.Context
 {
     public partial class RestaurantReviewsDBContext : DbContext
     {
@@ -20,6 +20,8 @@ namespace RestaurantReviews.Context.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasAnnotation("ProductVersion", "2.2.0-rtm-35687");
+
             modelBuilder.Entity<Restaurant>(entity =>
             {
                 entity.ToTable("Restaurant", "RR");

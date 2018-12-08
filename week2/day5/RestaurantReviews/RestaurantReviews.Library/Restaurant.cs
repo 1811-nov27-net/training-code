@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Serialization;
 
-namespace RestaurantReviews.Library.Models
+namespace RestaurantReviews.Library
 {
     /// <summary>
     /// A restaurant object, having a name, a collection of its reviews,

@@ -1,11 +1,11 @@
-﻿using RestaurantReviews.Library.Models;
+﻿using RestaurantReviews.Library;
 using System;
 using System.Linq;
 using Xunit;
 
-namespace RestaurantReviews.Testing.Library.Models
+namespace RestaurantReviews.Testing.Library
 {
-    public class RestaurantTest
+    public class RestaurantTests
     {
         // the test class is instantiated again for each test, so it is safe to put common setup code
         // in the class constructor or members. this will be a new restaurant object for each test.

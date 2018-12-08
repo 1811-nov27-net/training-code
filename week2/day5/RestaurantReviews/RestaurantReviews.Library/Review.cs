@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RestaurantReviews.Library.Models
+namespace RestaurantReviews.Library
 {
     /// <summary>
     /// A review of a restaurant, having a reviewer name, a score, and some text.

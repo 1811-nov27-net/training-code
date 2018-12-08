@@ -1,14 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using RestaurantReviews.Library.Models;
-using RestaurantReviews.Library.Repositories;
+using RestaurantReviews.Library;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security;
 using System.Xml.Serialization;
-using RCM = RestaurantReviews.Context.Models;
+using RC = RestaurantReviews.Context;
 
 namespace RestaurantReviews.ConsoleApp
 {
@@ -16,12 +14,12 @@ namespace RestaurantReviews.ConsoleApp
     {
         static void Main(string[] args)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<RCM.RestaurantReviewsDBContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<RC.RestaurantReviewsDBContext>();
             optionsBuilder.UseSqlServer(SecretConfiguration.ConnectionString);
             var options = optionsBuilder.Options;
-            
-            var dbContext = new RCM.RestaurantReviewsDBContext(options);
-            var restaurantRepository = new RestaurantRepository(dbContext);
+
+            var dbContext = new RC.RestaurantReviewsDBContext(options);
+            IRestaurantRepository restaurantRepository = new RC.RestaurantRepository(dbContext);
             var serializer = new XmlSerializer(typeof(List<Restaurant>));
 
             Console.WriteLine("Restaurant Reviews");
@@ -306,15 +304,18 @@ namespace RestaurantReviews.ConsoleApp
                                     restaurant = newRestaurant;
                                     restaurantRepository.UpdateRestaurant(restaurant);
                                     restaurantRepository.Save();
+                                    restaurants[restaurantNum - 1] = newRestaurant;
                                 }
                                 else if (input == "d")
                                 {
                                     restaurantRepository.DeleteRestaurant(restaurants[restaurantNum - 1].Id);
                                     restaurantRepository.Save();
+                                    restaurants.RemoveAt(restaurantNum - 1);
                                     break;
                                 }
                                 else if (input == "b")
                                 {
+                                    Console.WriteLine();
                                     break;
                                 }
                                 else

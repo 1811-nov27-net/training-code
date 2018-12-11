@@ -1,0 +1,211 @@
+<!-- first part of an html page is the document type declaration, "doctype" -->
+<!-- this tells the browser how to interpret the file, what type of html -->
+<!-- if you don't put a doctype, the browser will probably assume HTML4 or worse -->
+<!-- out doctype for "HTML5" is simply this: -->
+<!DOCTYPE html>
+<!-- your "document element" - "html" -->
+<html>
+
+<!-- two childrne of html - "head" and "body" -->
+<!-- head is for metadata about the page -->
+<head>
+    <!-- what character set should the browser use to interpret this document? "meta charset" -->
+    <meta charset="utf-8" />
+
+    <!-- opening tag, closing tag -->
+    <!-- opening tag can have attributes, which are key value pairs -->
+    <!-- this is a self-closing tag (via the / at the end) -->
+
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title> <!-- sets the title of the window/tab -->
+    <!-- affects mobile/tablet display parameters -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- application-name which will be the name of a webapp -->
+    <!-- author -->
+    <!-- description -->
+    <!-- keywords -->
+    <!-- robots -->
+
+    <!-- SEO = search engine optimization -->
+    <!-- used to be that this metadata was very important for -->
+    <!-- getting your website high in Google search results -->
+
+    <!-- you can customize "favicon" -->
+
+    <!-- link rel stylesheet to import external CSS (page styles) -->
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+
+    <!-- script tag to import external JavaScript for dynamic page behavior -->
+    <script src="main.js"></script>
+</head>
+
+<!-- body is for the page contents -->
+<body>
+    Hello, World!
+    <!-- h1 -h6 for headings -->
+    <h1>Big heading</h1>
+    <h4>little subheading</h4>
+
+    <p> <!-- paragraph -->
+        paragraph
+    </p>
+
+    <!-- <b>bold</b> <i>italic</i> -->
+
+    <!-- bold is just the default style for strong -->
+    <!-- but really, it's the CSS's job to override -->
+    <!-- that if it wants -->
+    <strong>"strong"</strong> <em>"emphasis"</em>
+    <p>
+    <u>underline</u>
+    <s>strikethrough</s>
+    <small>small caps</small>
+
+    <!-- lists in HTML -->
+    <ol> <!-- "ordered list" -->
+        <li> <!-- "list item" -->
+            item 1
+        </li>
+        <li>item 2</li>
+    </ol>
+
+    <ul>
+        <li>item 1</li>
+        <li>
+            <ol> <!-- nesting lists works -->
+                <li>nested item</li>
+                <li>nested item</li>
+            </ol>
+        </li>
+    </ul>
+
+    <!-- definition list - "name" "definition" -->
+
+    <!-- "anchor" tag -->
+    <a href="http://revature.com" title="mouseover/tooltip-text" target="_blank">Link to Revature</a>
+    <!-- target _blank opens in new tab -->
+    </p>
+
+    <blockquote>
+        paragraph-size quotations
+    </blockquote>
+
+    <p>
+    text with <code>inline code</code>
+    </p>
+
+    text<sup>superscript</sup><sub>subscript</sub>
+
+    <p><img src="./logo.png" width="100px" /></p>
+
+    <!-- block elements -->
+        <!-- "own" a vertical chunk of space on the page -->
+        <!-- so they will break lines with what is before and after to get that space -->
+        <!-- h1, p, ol, ul, blockquote -->
+    <div>
+        div is a generic block element for
+        dividing the structure of your page
+    </div>
+    <!-- some special named block elements new in HTML5 -->
+    <header></header>
+    <footer></footer>
+    <nav></nav>
+    <section></section>
+    <aside></aside>
+    <main></main>
+    <article></article>
+    <!-- inline elements -->
+    <!-- all the other ones - fit inline with text etc. -->
+    <!-- without demanding vertical space to themselves. -->
+    <!-- strong, em, u, img, a -->
+    <span>span is a generic inline element for dividing structure</span>
+
+    <table> <!-- the whole table -->
+        <thead> <!-- "table head" contain the header row -->
+            <tr> <!-- "table row" -->
+                <th>column 1</th> <!-- "table header" -->
+                <th>column 2</th>
+            </tr>
+        </thead>
+        <tbody> <!-- "table body" the non-header rows -->
+            <tr>
+                <td>123</td> <!-- "table data" one cell of data -->
+                <td>abc</td>
+            </tr>
+            <tr>
+                <td>456</td>
+                <td>def</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- "character references" -->
+    <!-- if i want a "<" in my page, i need to escape it -->
+    <!-- aka "character codes" "HTML codes" -->
+    <p>here is a less-than: &lt;</p>
+    <p>here is a greater-than: &gt;</p>
+    <p>here is an ampersand: &amp;</p>
+    <p>here is a non-breaking space: &nbsp;</p>
+    <p>&lt;html&gt;</p>
+    <p>&#x2012;</p> <!-- unicode 0x2012 is a em dash -->
+    <!-- unicode hex references with "&#x" or decimal "&#" -->
+
+    <!-- BUT this page is declared "utf-8" so we can just have literal -->
+    <!-- unicode characters -->
+    <p>©2018 Nick Escalona</p>
+    <p>&copy; 2018 Nick Escalona</p>
+
+    <select> <!-- "select" lists -->
+        <option>option 1</option>
+        <option>option 2</option>
+        <option>option 3</option>
+    </select>
+
+    <!-- other things new in HTML5 -->
+    <audio></audio>
+    <video></video>
+    <!-- specify multiple sources of the content with different -->
+    <!-- codecs, and the browser will pick the one it wants/can play -->
+
+    <!-- meant to replace plugins (Flash) because of security concerns -->
+
+    <canvas></canvas>
+    <!-- a section on the page we can draw graphics to -->
+    <!-- "Flash game" -->
+
+    <!-- until recently web browsers took no responsibility for -->
+    <!-- multimedia content, audio, video, etc -->
+    <!-- that was the job of third-party plugins -->
+
+    <!-- HTML5 brought: -->
+    <!-- - more precisely defined error-handling behavior by-->
+    <!--     the browser -->
+    <!-- - better accessibility support (ARIA) for screen readers etc -->
+    <!-- - we also got some new APIs to consume from JavaScript -->
+    <!-- - "local storage", geolocation -->
+    <form>
+        <input type="text" placeholder="user id" required maxlength="3" /> text box
+
+        <!-- in html, a "blank" attribute with no value -->
+        <!-- like "required" is shorthand for -->
+        <!--  required="required"  -->
+
+        <!-- HTML5 added lots of new input types with browser support -->
+        <!-- and, client-side validation attributes -->
+        <input type="color">
+        <input type="number">
+
+        <input type="button" value="button"></input>
+        <input type="date"></input> date picker
+        <input type="file"></input> file upload picker
+        <input type="radio" name="name1" />
+        <input type="radio" name="name1" />
+        <input type="radio" name="name1" />
+        <input type="radio" name="name1" />
+        <input type="checkbox" />
+        <input type="submit" />submitting the form
+    </form>
+</body>
+</html>

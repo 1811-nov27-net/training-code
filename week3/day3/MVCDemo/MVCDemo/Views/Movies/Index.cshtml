@@ -1,0 +1,66 @@
+﻿@* razor comments (disappear when page is rendered) *@
+<!-- html comments (do make their way to the client) -->
+
+@* views can be loosely typed or strongly typed. *@
+@* strongly typed views accept one model with the defined type *@
+@* and then they can access its fields in a type-safe way. *@
+
+@* a view is strongly typed when it has the @model directive *@
+
+@model IEnumerable<MVCDemo.Models.Movie>
+
+@* @model defines what "Model" will be inside this view *@
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    @* this is a tag helper *@
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @* this is an example of an "HTML helper" provided by the Razor engine *@
+                @Html.DisplayNameFor(model => model.Id)
+                @* output the name of a field *@
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReleaseDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @* output the value of a field as a string *@
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReleaseDate)
+            </td>
+            <td>
+                @* HTML helper for creating a link to an action in the web app. *@
+                @*              link text,  action name,   route parameters*@
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @* each controller has one or more action methods, which typically are *@
+                @* one-to-one with pages from the client's perspective. *@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

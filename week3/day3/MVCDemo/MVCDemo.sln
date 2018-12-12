@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCDemo", "MVCDemo\MVCDemo.csproj", "{ED409720-2CCF-48B8-B4A0-D51A969FFA90}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCDemo.DataAccess", "MVCDemo.DataAccess\MVCDemo.DataAccess.csproj", "{9C704FBB-A101-40EC-990D-AA995A0EF832}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{ED409720-2CCF-48B8-B4A0-D51A969FFA90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED409720-2CCF-48B8-B4A0-D51A969FFA90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED409720-2CCF-48B8-B4A0-D51A969FFA90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C704FBB-A101-40EC-990D-AA995A0EF832}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C704FBB-A101-40EC-990D-AA995A0EF832}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C704FBB-A101-40EC-990D-AA995A0EF832}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C704FBB-A101-40EC-990D-AA995A0EF832}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

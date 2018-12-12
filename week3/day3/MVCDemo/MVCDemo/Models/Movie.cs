@@ -16,7 +16,7 @@ namespace MVCDemo.Models
         [StringLength(50)] // max 50 chars
         public string Title { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime ReleaseDate { get; set; }
 
         public List<string> Cast { get; set; } = new List<string>();

@@ -40,7 +40,9 @@ namespace MVCDemo.Controllers
         // for the client accessing the Create page
         public ActionResult Create()
         {
-            return View();
+            return View(); // strongly typed to Movie
+            // but we didn't pass it anything.
+            // so all the corresponding fields will be empty/default.
         }
 
         // POST: Movies/Create
@@ -64,6 +66,11 @@ namespace MVCDemo.Controllers
                 {
                     Repo.CreateMovie(newMovie);
                 }
+                else
+                {
+                    // get a new Create page, but with the current ModelState errors.
+                    return View();
+                }
 
                 // nameof operator is just the string of whatever you give it
                 // nameof(Index) == "Index"
@@ -74,6 +81,7 @@ namespace MVCDemo.Controllers
             {
                 // add server-side validation error message
                 ModelState.AddModelError("Id", ex.Message);
+                // get a new Create page, but with the current ModelState errors.
                 return View();
             }
             catch
@@ -87,18 +95,47 @@ namespace MVCDemo.Controllers
         // GET: Movies/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var movie = Repo.GetById(id);
+            if (movie != null)
+            {
+                return View(movie);
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Movies/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        // id is coming via route parameter
+        // movie is coming via request body
+        public ActionResult Edit(int id, Movie movie)
         {
             try
             {
-                // TODO: Add update logic here
+                // server-side validation
+                if (id != movie.Id)
+                {
+                    ModelState.AddModelError("id", "should match the route id");
+                    return View();
+                }
 
+                if (ModelState.IsValid)
+                {
+                    Repo.EditMovie(movie);
+                }
+                else
+                {
+                    // get a new Edit page, but with the current ModelState errors.
+                    return View();
+                }
+
+                // redirecttoaction and view are two different ways to get to a view
+
+                // this one would not change the URL displayed to "index", it would leave it
+                // at "edit", which would be confusing for the user.
+                //return View(nameof(Index));
+
+                // this tells the browser to make a new request for the index view.
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -110,17 +147,30 @@ namespace MVCDemo.Controllers
         // GET: Movies/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var movie = Repo.GetById(id);
+            if (movie != null)
+            {
+                return View(movie);
+            }
+            // if id not found...
+            // ideally show an error message somehow
+            // but i'll just redirect to movies index.
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Movies/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        // we don't actually use that formcollection, it's really just to distinguish
+        // this method from the previous one for the C# compiler. (for ASP.NET, the HttpPost attr does that)
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try
             {
-                // TODO: Add delete logic here
+                // server-side checks for things like this
+                // never assume only one client is working with your app at a time
+                // (another browser might have deleted the record since we loaded the page)
+                var success = Repo.DeleteMovie(id);
 
                 return RedirectToAction(nameof(Index));
             }

@@ -32,13 +32,15 @@ namespace MVCDemo.Repositories
 
         public Movie GetById(int id)
         {
-            return _movies.First(m => m.Id == id);
+            return _movies.FirstOrDefault(m => m.Id == id);
+            // returns null if none
         }
 
-        public void DeleteMovie(int id)
+        // returns false if no such id
+        public bool DeleteMovie(int id)
         {
             var movie = GetById(id);
-            _movies.Remove(movie);
+            return _movies.Remove(movie); // return false if not contained
         }
 
         public void CreateMovie(Movie movie)
@@ -48,6 +50,13 @@ namespace MVCDemo.Repositories
                 throw new ArgumentException($"duplicate ID {movie.Id}");
             }
             _movies.Add(movie);
+        }
+
+        // edit by movie's id
+        public void EditMovie(Movie movie)
+        {
+            DeleteMovie(movie.Id); // delete if exists
+            CreateMovie(movie);
         }
     }
 }

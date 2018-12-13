@@ -28,17 +28,34 @@ namespace MVCDemo.Repositories
 
         public IEnumerable<Movie> GetAll()
         {
-            // mapping logic in here
-            // (we'll wind up repeating ourselves if we don't move this to a Mapper static class)
-            return _db.Movie.Include(m => m.CastMembers).Select(m => new Movie
-            {
-                Id = m.Id,
-                Title = m.Title,
-                Cast = m.CastMembers.Select(c => c.Name).ToList()
-            });
+            // used to have mapping logic in here
+            // (we wound up repeating ourselves until we moved this to another method/class)
+            return _db.Movie.Include(m => m.CastMembers).Select(Map);
+            // deferred execution - no network access / iteration yet
+        }
+
+        public IEnumerable<Movie> GetAllByCastMember(string cast)
+        {
+            return _db.CastMember
+                .Include(c => c.Movie)
+                    .ThenInclude(m => m.CastMembers) // fills in navigation property OF a navigation property
+                .Where(c => c.Name == cast)
+                .Select(c => Map(c.Movie));
             // deferred execution - no network access / iteration yet
         }
 
         public Movie GetById(int id) => throw new NotImplementedException();
+
+        // moving map logic to separate methods or class to prevent repeating myself
+        public static Movie Map(Data.Movie data)
+        {
+            return new Movie
+            {
+                Id = data.Id,
+                Title = data.Title,
+                ReleaseDate = data.ReleaseDate,
+                Cast = data.CastMembers.Select(c => c.Name).ToList()
+            };
+        }
     }
 }

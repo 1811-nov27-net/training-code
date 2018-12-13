@@ -17,10 +17,49 @@
 
 <h1>Index</h1>
 
+@* "razor expressions" *@
+@DateTime.Now
+@(1 + 1)
+@* a value, not a whole statement *@
+@* this will render that value onto the HTML "right here" on the page *@
+
+@* "razor blocks" are statements within braces, not single values. *@
+@* these don't inherently render to the page, they execute logic at time of page rendering *@
+@{
+    
+}
+
+@* @if, @while, @for, @foreach, familiar c# structures *@
+
 <p>
     @* this is a tag helper *@
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" asp->Create New</a>
 </p>
+@*@foreach (var item in Model)
+{
+    item.Id = -item.Id;
+}*@
+@* this is really the controller's job to do logic but we can do it here if we must *@
+
+@* there's only one model per view. *@
+@* if you need more than one model, make a new model that contains the two you want. *@
+@* especially if this new model is only used on one page, we'll often call it a "viewmodel" *@
+@* which means, a model that's pretty much just for one view. *@
+
+@* 
+tag helpers
+
+a (anchor) tag helper, for links within the web application
+    attributes
+        asp-action="the action name"
+        asp-controller="the controller name" (defaults to same controller as this one)
+        asp-route="the defined name of the convention route to base this URL on" (defaults to default)
+        asp-route-id="the value of id to go in the URL"
+        asp-route-whatever-route-parameter="the value of that route parameter to go in the URL"
+    (@Html.RouteLink is the HTML helper counterpart)
+
+*@
+
 <table class="table">
     <thead>
         <tr>
@@ -40,6 +79,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
+        @(1+1)
         <tr>
             <td>
                 @* output the value of a field as a string *@

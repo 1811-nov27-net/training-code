@@ -46,6 +46,7 @@ namespace MVCDemo.Repositories
                         .ThenInclude(m => m.CastMemberJunctions)
                             .ThenInclude(j => j.CastMember)
                 .Where(c => c.Name == cast)
+                .ToList() // faced issue inside next call with null properties if ToList was not called here
                 .SelectMany(c => c.MovieJunctions.Select(j => Map(j.Movie)));
             // SelectMany is a version of Select that produces _multiple_ things from each element,
             //    then flattens the result to one overall list

@@ -128,7 +128,8 @@ namespace MVCDemo.Controllers
 
         // POST: Movies/Edit/5
         [HttpPost("Edit/{id}")]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken] // this action filter ensures that this form submission includes
+        // a correct anti-CSRF token, discards the form submission otherwise.
         // id is coming via route parameter
         // movie is coming via request body
         public ActionResult Edit(int id, Movie movie)

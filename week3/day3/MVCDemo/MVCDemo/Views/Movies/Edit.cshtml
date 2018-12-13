@@ -10,7 +10,15 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+        @* form tag helper automatically includes token to prevent CSRF *@
+        @* cross-site request forgery. *@
+        @* every time we render the form, we generate a new token attached to it *@
+        @* then we expect to receive that same token back from the client *@
+        @* in his next request *@
         <form asp-action="Edit">
+
+            @* the corresponding HTML helper is @Html.BeginForm *@
+            @* and if you use that, you need to manually put the verification token HTML helper in there *@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>

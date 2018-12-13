@@ -38,14 +38,33 @@ namespace MVCDemo
             });
 
             // here we provide "services" to be injected to classes that require them at runtime.
+            //   which classes? basically the controller's deps, and what THEY require, and what THEY require,
+            //    and so on
 
             // this says, when anyone needs a IMovieRepo, construct a MovieRepoDB for them.
             // ("scoped" has to do with the object's lifetime)
             services.AddScoped<IMovieRepo, MovieRepoDB>();
+
+            // three lifetimes for a service
+            // "scoped" means, one instance of this object will be shared to all who need it
+            //    within the span of this request.
+            // "transient" (AddTransient) means, a new instance of the object every time, for every
+            //    new object who wants one.
+            // "singleton" (AddSingleton) means, only one instance ever, across however many requests.
+
+
             // this says, when anyone wants the dbcontext MovieDBContext, get him one,
             // using SQL Server and a connection string found in appsettings.json (Configuration).
             services.AddDbContext<MovieDBContext>(optionsBuilder =>
                 optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DB")));
+            // dbcontexts are added with "scoped" lifetime by default.
+
+            // lifetimes should make sense
+            //   e.g. if my repo needs a dbcontext, and the dbcontext is scoped,
+            //  then my repo should be either scoped or transient.
+
+            // if you get an exception saying "no service could be found for ____"
+            //  this means you probably forgot to add a service here.
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

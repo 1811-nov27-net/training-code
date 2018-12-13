@@ -1,12 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using MVCDemo.Models;                //  and just Movie for this one
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-
 // namespace alias to get around same-name classes
 using Data = MVCDemo.DataAccess;    // now, we have Data.Movie
-using MVCDemo.Models;                //  and just Movie for this one
-using Microsoft.EntityFrameworkCore;
 
 namespace MVCDemo.Repositories
 {
@@ -22,13 +20,39 @@ namespace MVCDemo.Repositories
             db.Database.EnsureCreated();
         }
 
+        // ignores cast members
         public void CreateMovie(Movie movie)
         {
-            throw new NotImplementedException();
+            _db.Add(Map(movie));
+            _db.SaveChanges();
         }
 
-        public bool DeleteMovie(int id) => throw new NotImplementedException();
-        public void EditMovie(Movie movie) => throw new NotImplementedException();
+        public bool DeleteMovie(int id)
+        {
+            try
+            {
+                var movie = _db.Movie.Include(m => m.CastMemberJunctions).First(m => m.Id == id);
+                _db.Remove(movie);
+                foreach (var item in movie.CastMemberJunctions)
+                {
+                    _db.Remove(item);
+                }
+                _db.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        // (adds if ID is set to 0)
+        public void EditMovie(Movie movie)
+        {
+            var mappedMovie = Map(movie);
+            _db.Update(mappedMovie);
+            _db.SaveChanges();
+        }
 
         public IEnumerable<Movie> GetAll()
         {
@@ -53,7 +77,13 @@ namespace MVCDemo.Repositories
             // deferred execution - no network access / iteration yet
         }
 
-        public Movie GetById(int id) => throw new NotImplementedException();
+        public Movie GetById(int id)
+        {
+            return Map(_db.Movie
+                .Include(m => m.CastMemberJunctions)
+                    .ThenInclude(j => j.CastMember)
+                .First(m => m.Id == id));
+        }
 
         // moving map logic to separate methods or class to prevent repeating myself
         public static Movie Map(Data.Movie data)
@@ -67,15 +97,14 @@ namespace MVCDemo.Repositories
             };
         }
 
-        //public static Data.Movie Map(Movie ui)
-        //{
-        //    return new Data.Movie
-        //    {
-        //        Id = ui.Id,
-        //        Title = ui.Title,
-        //        ReleaseDate = ui.ReleaseDate,
-        //        CastMembers = ui.Cast.Select(str => _db.CastMember.FirstOrDefault(c => c.Name))
-        //    };
-        //}
+        public static Data.Movie Map(Movie ui)
+        {
+            return new Data.Movie
+            {
+                Id = ui.Id,
+                Title = ui.Title,
+                ReleaseDate = ui.ReleaseDate
+            };
+        }
     }
 }

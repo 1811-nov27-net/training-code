@@ -22,6 +22,6 @@ namespace MVCDemo.DataAccess
         public DateTime ReleaseDate { get; set; }
 
         // navigation property
-        public virtual ICollection<CastMember> CastMembers { get; set; }
+        public virtual ICollection<MovieCastMemberJunction> CastMemberJunctions { get; set; }
     }
 }

@@ -22,7 +22,11 @@ namespace MVCDemo.Repositories
             db.Database.EnsureCreated();
         }
 
-        public void CreateMovie(Movie movie) => throw new NotImplementedException();
+        public void CreateMovie(Movie movie)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool DeleteMovie(int id) => throw new NotImplementedException();
         public void EditMovie(Movie movie) => throw new NotImplementedException();
 
@@ -30,17 +34,21 @@ namespace MVCDemo.Repositories
         {
             // used to have mapping logic in here
             // (we wound up repeating ourselves until we moved this to another method/class)
-            return _db.Movie.Include(m => m.CastMembers).Select(Map);
+            return _db.Movie.Include(m => m.CastMemberJunctions).ThenInclude(j => j.CastMember).Select(Map);
             // deferred execution - no network access / iteration yet
         }
 
         public IEnumerable<Movie> GetAllByCastMember(string cast)
         {
             return _db.CastMember
-                .Include(c => c.Movie)
-                    .ThenInclude(m => m.CastMembers) // fills in navigation property OF a navigation property
+                .Include(c => c.MovieJunctions)
+                    .ThenInclude(j => j.Movie)  // fills in navigation property OF a navigation property
+                        .ThenInclude(m => m.CastMemberJunctions)
+                            .ThenInclude(j => j.CastMember)
                 .Where(c => c.Name == cast)
-                .Select(c => Map(c.Movie));
+                .SelectMany(c => c.MovieJunctions.Select(j => Map(j.Movie)));
+            // SelectMany is a version of Select that produces _multiple_ things from each element,
+            //    then flattens the result to one overall list
             // deferred execution - no network access / iteration yet
         }
 
@@ -54,8 +62,19 @@ namespace MVCDemo.Repositories
                 Id = data.Id,
                 Title = data.Title,
                 ReleaseDate = data.ReleaseDate,
-                Cast = data.CastMembers.Select(c => c.Name).ToList()
+                Cast = data.CastMemberJunctions.Select(j => j.CastMember.Name).ToList()
             };
         }
+
+        //public static Data.Movie Map(Movie ui)
+        //{
+        //    return new Data.Movie
+        //    {
+        //        Id = ui.Id,
+        //        Title = ui.Title,
+        //        ReleaseDate = ui.ReleaseDate,
+        //        CastMembers = ui.Cast.Select(str => _db.CastMember.FirstOrDefault(c => c.Name))
+        //    };
+        //}
     }
 }

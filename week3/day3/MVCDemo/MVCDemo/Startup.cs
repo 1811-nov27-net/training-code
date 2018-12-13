@@ -45,7 +45,7 @@ namespace MVCDemo
             // this says, when anyone wants the dbcontext MovieDBContext, get him one,
             // using SQL Server and a connection string found in appsettings.json (Configuration).
             services.AddDbContext<MovieDBContext>(optionsBuilder =>
-                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("MoviesCodeFirstDB")));
+                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DB")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

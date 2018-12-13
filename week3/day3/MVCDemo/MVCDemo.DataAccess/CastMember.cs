@@ -11,7 +11,6 @@ namespace MVCDemo.DataAccess
         public string Name { get; set; }
 
         // navigation property
-        // creates many-to-one relationship
-        public virtual Movie Movie { get; set; }
+        public virtual ICollection<MovieCastMemberJunction> MovieJunctions { get; set; }
     }
 }

@@ -24,6 +24,48 @@
         </dd>
     </dl>
 </div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @* this and other lambdas for razor are never "actually executed" *@
+                @* they are just looked at by the rendering engine *@
+                @Html.DisplayNameFor(model => model.Reviews.First().ReviewerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Reviews.First().Score)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Reviews.First().Text)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Reviews)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReviewerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Score)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Text)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", "Review", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", "Review", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", "Review", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
 <div>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     <a asp-action="Index">Back to List</a>

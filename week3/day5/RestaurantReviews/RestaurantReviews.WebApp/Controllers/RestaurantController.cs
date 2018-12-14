@@ -54,6 +54,7 @@ namespace RestaurantReviews.WebApp.Controllers
                 Name = libRest.Name,
                 Reviews = libRest.Reviews.Select(y => new Review
                 {
+                    Id = y.Id,
                     ReviewerName = y.ReviewerName,
                     Score = y.Score,
                     Text = y.Text

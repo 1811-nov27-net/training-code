@@ -64,7 +64,7 @@ namespace RestaurantReviews.Context
         }
 
         /// <summary>
-        /// Delete a restaurant by ID. Any reviews associated to it will not be deleted.
+        /// Delete a restaurant by ID, including any reviews associated to it.
         /// </summary>
         /// <param name="restaurantId">The ID of the restaurant</param>
         public void DeleteRestaurant(int restaurantId)
@@ -81,6 +81,15 @@ namespace RestaurantReviews.Context
             // calling Update would mark every property as Modified.
             // this way will only mark the changed properties as Modified.
             _db.Entry(_db.Restaurant.Find(restaurant.Id)).CurrentValues.SetValues(Mapper.Map(restaurant));
+        }
+
+        /// <summary>
+        /// Get a review.
+        /// </summary>
+        /// <param name="reviewId">The ID of the review</param>
+        public Library.Review GetReviewById(int reviewId)
+        {
+            return Mapper.Map(_db.Review.AsNoTracking().First(r => r.Id == reviewId));
         }
 
         /// <summary>
@@ -121,6 +130,16 @@ namespace RestaurantReviews.Context
         public void UpdateReview(Library.Review review)
         {
             _db.Entry(_db.Review.Find(review.Id)).CurrentValues.SetValues(Mapper.Map(review));
+        }
+
+        /// <summary>
+        /// Get the ID of the restaurant associated to the review with the given ID.
+        /// </summary>
+        /// <param name="reviewId">The ID of the review</param>
+        /// <returns></returns>
+        public int RestaurantIdFromReviewId(int reviewId)
+        {
+            return _db.Review.AsNoTracking().First(r => r.Id == reviewId).RestaurantId;
         }
 
         /// <summary>

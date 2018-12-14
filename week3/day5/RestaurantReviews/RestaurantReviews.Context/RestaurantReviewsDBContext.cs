@@ -52,7 +52,6 @@ namespace RestaurantReviews.Context
                 entity.HasOne(d => d.Restaurant)
                     .WithMany(p => p.Review)
                     .HasForeignKey(d => d.RestaurantId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Review_Restaurant");
             });
         }

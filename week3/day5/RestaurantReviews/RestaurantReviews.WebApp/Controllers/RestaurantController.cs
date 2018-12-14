@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using RestaurantReviews.WebApp.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Lib = RestaurantReviews.Library;
 
 namespace RestaurantReviews.WebApp.Controllers
@@ -34,12 +33,8 @@ namespace RestaurantReviews.WebApp.Controllers
             {
                 Id = x.Id,
                 Name = x.Name,
-                Reviews = x.Reviews.Select(y => new Review
-                {
-                    ReviewerName = y.ReviewerName,
-                    Score = y.Score,
-                    Text = y.Text
-                })
+                Reviews = x.Reviews.Select(y => new Review()),
+                Score = x.Score
             });
             return View(webRests);
         }
@@ -58,7 +53,8 @@ namespace RestaurantReviews.WebApp.Controllers
                     ReviewerName = y.ReviewerName,
                     Score = y.Score,
                     Text = y.Text
-                })
+                }),
+                Score = libRest.Score
             };
             return View(webRest);
         }
@@ -124,11 +120,8 @@ namespace RestaurantReviews.WebApp.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var libRest = new Lib.Restaurant
-                    {
-                        Id = id,
-                        Name = restaurant.Name
-                    };
+                    Lib.Restaurant libRest = Repo.GetRestaurantById(id);
+                    libRest.Name = restaurant.Name;
                     Repo.UpdateRestaurant(libRest);
                     Repo.Save();
 

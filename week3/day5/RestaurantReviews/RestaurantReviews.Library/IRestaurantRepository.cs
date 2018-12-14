@@ -8,13 +8,13 @@ namespace RestaurantReviews.Library
     public interface IRestaurantRepository
     {
         /// <summary>
-        /// Get all restaurants with deferred execution.
+        /// Get all restaurants with deferred execution, including any associated reviews.
         /// </summary>
         /// <returns>The collection of restaurants</returns>
         IEnumerable<Restaurant> GetRestaurants(string search);
 
         /// <summary>
-        /// Add a restaurant, including any associated reviews.
+        /// Get a restaurant, including any associated reviews.
         /// </summary>
         /// <param name="restaurant">The restaurant</param>
         Restaurant GetRestaurantById(int id);
@@ -26,7 +26,7 @@ namespace RestaurantReviews.Library
         void AddRestaurant(Restaurant restaurant);
 
         /// <summary>
-        /// Delete a restaurant by ID. Any reviews associated to it will not be deleted.
+        /// Delete a restaurant by ID, including any reviews associated to it.
         /// </summary>
         /// <param name="restaurantId">The ID of the restaurant</param>
         void DeleteRestaurant(int restaurantId);
@@ -36,6 +36,12 @@ namespace RestaurantReviews.Library
         /// </summary>
         /// <param name="restaurant">The restaurant with changed values</param>
         void UpdateRestaurant(Restaurant restaurant);
+
+        /// <summary>
+        /// Get a review.
+        /// </summary>
+        /// <param name="reviewId">The ID of the review</param>
+        Review GetReviewById(int reviewId);
 
         /// <summary>
         /// Add a review, and optionally associate it with a restaurant.
@@ -55,6 +61,13 @@ namespace RestaurantReviews.Library
         /// </summary>
         /// <param name="review">The review with changed values</param>
         void UpdateReview(Review review);
+
+        /// <summary>
+        /// Get the ID of the restaurant associated to the review with the given ID.
+        /// </summary>
+        /// <param name="reviewId">The ID of the review</param>
+        /// <returns></returns>
+        int RestaurantIdFromReviewId(int reviewId);
 
         /// <summary>
         /// Persist changes to the data source.

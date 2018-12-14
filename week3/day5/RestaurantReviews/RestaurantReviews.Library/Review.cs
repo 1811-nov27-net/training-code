@@ -14,6 +14,7 @@ namespace RestaurantReviews.Library
     {
         private int? _score;
         private string _reviewerName;
+        private string _text = "";
 
         /// <summary>
         /// The review's ID. Zero indicates a missing value.
@@ -56,6 +57,13 @@ namespace RestaurantReviews.Library
         /// <summary>
         /// The text of the review.
         /// </summary>
-        public string Text { get; set; }
+        /// <remarks>
+        /// Null is treated as equivalent to the empty string.
+        /// </remarks>
+        public string Text
+        {
+            get => _text;
+            set => _text = value ?? "";
+        }
     }
 }

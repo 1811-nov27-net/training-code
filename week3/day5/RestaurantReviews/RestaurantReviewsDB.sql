@@ -30,5 +30,5 @@ GO
 
 ALTER TABLE RR.Review ADD
 	CONSTRAINT FK_Review_Restaurant
-		FOREIGN KEY (RestaurantID) REFERENCES RR.Restaurant (ID);
+		FOREIGN KEY (RestaurantID) REFERENCES RR.Restaurant (ID) ON DELETE CASCADE;
 GO

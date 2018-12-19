@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,6 +25,19 @@ namespace TemperatureWebSite
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // when you add a service like this, the framework will construct the class for you
+            services.AddSingleton<HttpClient>();
+
+            // with singleton, we can make the single instance ourselves
+            //var singleClient = new HttpClient();
+            //services.AddSingleton(singleClient);
+
+            // with any service type, we can give it a lambda that shows it how to construct the object.
+            // (necessary if there's no zero-parameter constructor
+            //services.AddSingleton(sp => new HttpClient(sp.GetRequiredService<ExampleDependency>()));
+            // (lambda's one parameter is the ServiceProvider, which has methods to get other services
+            // as needed
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.

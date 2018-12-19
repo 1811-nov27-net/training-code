@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -52,23 +53,40 @@ namespace TemperatureWebSite.Controllers
         // GET: Temperature/Create
         public ActionResult Create()
         {
-            return View();
+            // provide default value to Create form
+            return View(new TemperatureRecord { Time = DateTime.Now });
+        }
+
+        public static HttpContent ToContent<T>(T obj)
+        {
+            string json = JsonConvert.SerializeObject(obj);
+            // declare the encoding (unicode)
+            // and the "media type" (JSON) of the thing to send in the request body
+            HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
+            return content;
         }
 
         // POST: Temperature/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(TemperatureRecord record)
         {
             try
             {
-                // TODO: Add insert logic here
+                // set unit to 1 (celsius)
+                record.Unit = 1;
+                // use POST method, not GET, based on the route the service has defined
+                HttpResponseMessage response = await Client.PostAsync("https://localhost:44365/api/temperature", ToContent(record));
 
-                return RedirectToAction(nameof(Index));
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(record);
             }
             catch
             {
-                return View();
+                return View(record);
             }
         }
 

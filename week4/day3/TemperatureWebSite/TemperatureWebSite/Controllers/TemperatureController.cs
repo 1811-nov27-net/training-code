@@ -59,6 +59,7 @@ namespace TemperatureWebSite.Controllers
 
         public static HttpContent ToContent<T>(T obj)
         {
+            // instead of this we can use PostAsJsonAsync, easier
             string json = JsonConvert.SerializeObject(obj);
             // declare the encoding (unicode)
             // and the "media type" (JSON) of the thing to send in the request body
@@ -91,48 +92,60 @@ namespace TemperatureWebSite.Controllers
         }
 
         // GET: Temperature/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var json = await Client.GetStringAsync($"https://localhost:44365/api/temperature/{id}");
+            return View(JsonConvert.DeserializeObject<TemperatureRecord>(json));
         }
 
         // POST: Temperature/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, TemperatureRecord record)
         {
             try
             {
-                // TODO: Add update logic here
+                record.Unit = 1;
+                var url = $"https://localhost:44365/api/temperature/{id}";
+                var response = await Client.PutAsJsonAsync(url, record);
 
-                return RedirectToAction(nameof(Index));
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(record);
             }
             catch
             {
-                return View();
+                return View(record);
             }
         }
 
         // GET: Temperature/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            var json = await Client.GetStringAsync($"https://localhost:44365/api/temperature/{id}");
+            return View(JsonConvert.DeserializeObject<TemperatureRecord>(json));
         }
 
         // POST: Temperature/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, IFormCollection collection)
         {
             try
             {
-                // TODO: Add delete logic here
+                var response = await Client.DeleteAsync($"https://localhost:44365/api/temperature/{id}");
 
-                return RedirectToAction(nameof(Index));
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return RedirectToAction(nameof(Delete), new { id });
             }
             catch
             {
-                return View();
+                return RedirectToAction(nameof(Delete), new { id });
             }
         }
     }

@@ -124,6 +124,7 @@ namespace TemperatureWebSite.Controllers
         // GET: Temperature/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
+            // extract response body in just one await
             var json = await Client.GetStringAsync($"https://localhost:44365/api/temperature/{id}");
             return View(JsonConvert.DeserializeObject<TemperatureRecord>(json));
         }

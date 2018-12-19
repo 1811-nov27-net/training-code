@@ -9,9 +9,18 @@ using System.Text;
 namespace ConversionService
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IService1" in both code and config file together.
-    [ServiceContract]
-    public interface IService1
+    [ServiceContract] // servicecontract marks an interface as a service contract visible over SOAP.
+    public interface IConversionService
     {
+        [OperationContract] // operationcontract marks this method as one that can be called over SOAP.
+        [FaultContract(typeof(ArgumentNullException))]
+        Temperature FahrenheitToCelsius(Temperature fahrenheit);
+
+        // helper method not visible to SOAP
+        //string HelperMethod(string s);
+
+        [OperationContract]
+        Temperature CelsiusToFahrenheit(Temperature celsius);
 
         [OperationContract]
         string GetData(int value);

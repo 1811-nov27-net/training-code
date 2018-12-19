@@ -10,8 +10,19 @@ namespace ConversionService
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
-    public class Service1 : IService1
+    public class Conversion : IConversionService
     {
+        public Temperature FahrenheitToCelsius(Temperature fahrenheit)
+        {
+            if (fahrenheit == null) throw new ArgumentNullException(nameof(fahrenheit));
+            return new Temperature { Value = 5 / 9.0 * (fahrenheit.Value - 32) };
+        }
+
+        public Temperature CelsiusToFahrenheit(Temperature celsius)
+        {
+            return new Temperature { Value = 9 / 5.0 * celsius.Value + 32 };
+        }
+
         public string GetData(int value)
         {
             return string.Format("You entered: {0}", value);

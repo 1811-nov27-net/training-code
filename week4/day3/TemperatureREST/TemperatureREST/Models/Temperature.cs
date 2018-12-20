@@ -13,8 +13,7 @@ namespace TemperatureREST.Models
 
     public class Temperature
     {
-        [Required]
-        public int? Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         public DateTime? Time { get; set; }

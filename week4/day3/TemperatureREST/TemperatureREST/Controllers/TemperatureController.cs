@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace TemperatureREST.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize] // only logged-in users can access any of these action methods.
     public class TemperatureController : ControllerBase
     {
         // really we would use a DB, but for dmeo purposes, a static list.
@@ -30,6 +32,7 @@ namespace TemperatureREST.Controllers
         // the return type can be just your type
         // or, ActionResult<YourType>, both will work, but the latter also allows you to
         // return error messages
+        [AllowAnonymous] // override [Authorize], allow not logged-in users to access this one method
         public ActionResult<IEnumerable<Temperature>> Get()
         {
             try
@@ -159,6 +162,7 @@ namespace TemperatureREST.Controllers
         // DELETE: api/Temperature/5
         // DELETE is for deleting resources
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin")] // comma-separated list of allowed roles to this action method.
         public ActionResult Delete(int id)
         {
             Temperature existing;

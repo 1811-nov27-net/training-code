@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,25 +12,27 @@ using TemperatureWebSite.Models;
 
 namespace TemperatureWebSite.Controllers
 {
-    public class TemperatureController : Controller
+    public class TemperatureController : AServiceController
     {
-        public HttpClient Client { get; set; }
-
         // dependency injection
-        public TemperatureController(HttpClient client)
+        public TemperatureController(HttpClient client) : base(client)
         {
-            Client = client;
         }
 
         // GET: Temperature
         public async Task<ActionResult> Index()
         {
             // send "GET api/Temperature" to service, get headers of response
-            HttpResponseMessage response = await Client.GetAsync("https://localhost:44365/api/temperature");
+            HttpRequestMessage request = CreateRequestToService(HttpMethod.Get, "api/temperature");
+            HttpResponseMessage response = await Client.SendAsync(request);
 
             // (if status code is not 200-299 (for success))
             if (!response.IsSuccessStatusCode)
             {
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
                 return RedirectToAction("Error", "Home");
             }
 
@@ -51,21 +54,33 @@ namespace TemperatureWebSite.Controllers
         }
 
         // GET: Temperature/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
+            HttpRequestMessage request = CreateRequestToService(HttpMethod.Get, "api/account/loggedinuser");
+            HttpResponseMessage response = await Client.SendAsync(request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+                return View("Error");
+            }
+
             // provide default value to Create form
             return View(new TemperatureRecord { Time = DateTime.Now });
         }
 
-        public static HttpContent ToContent<T>(T obj)
-        {
-            // instead of this we can use PostAsJsonAsync, easier
-            string json = JsonConvert.SerializeObject(obj);
-            // declare the encoding (unicode)
-            // and the "media type" (JSON) of the thing to send in the request body
-            HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
-            return content;
-        }
+        //public static HttpContent ToContent<T>(T obj)
+        //{
+        //    // instead of this we can use PostAsJsonAsync, easier
+        //    string json = JsonConvert.SerializeObject(obj);
+        //    // declare the encoding (unicode)
+        //    // and the "media type" (JSON) of the thing to send in the request body
+        //    HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
+        //    return content;
+        //}
 
         // POST: Temperature/Create
         [HttpPost]
@@ -77,13 +92,18 @@ namespace TemperatureWebSite.Controllers
                 // set unit to 1 (celsius)
                 record.Unit = 1;
                 // use POST method, not GET, based on the route the service has defined
-                HttpResponseMessage response = await Client.PostAsync("https://localhost:44365/api/temperature", ToContent(record));
+                HttpRequestMessage request = CreateRequestToService(HttpMethod.Post, "api/temperature", record);
+                HttpResponseMessage response = await Client.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
+                if (!response.IsSuccessStatusCode)
                 {
-                    return RedirectToAction(nameof(Index));
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        return RedirectToAction("Login", "Account");
+                    }
+                    return View(record);
                 }
-                return View(record);
+                return RedirectToAction(nameof(Index));
             }
             catch
             {

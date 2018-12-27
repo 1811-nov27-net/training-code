@@ -13,23 +13,20 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: |
-    cd week3/day5/RestaurantReviews
-    dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
-
-- script: |
-    cd week3/day5/RestaurantReviews
-    dotnet test --configuration $(buildConfiguration) --logger trx
-  displayName: 'dotnet test $(buildConfiguration)'
-
-- script: |
-    cd week3/day5/RestaurantReviews
-    dotnet publish RestaurantReviews.WebApp --configuration $(buildConfiguration) -o ../publish
-  displayName: 'dotnet publish $(buildConfiguration)'
-
-- task: PublishTestResults@2
-  condition: succeededOrFailed()
+- task: DotNetCoreCLI@2
   inputs:
-    testRunner: VSTest
-    testResultsFiles: '**/*.trx'
+    command: build
+    projects: week3/day5/RestaurantReviews
+  displayName: dotnet build
+- task: DotNetCoreCLI@2
+  inputs:
+    command: test
+    projects: week3/day5/RestaurantReviews
+    publishTestResults: true
+  displayName: dotnet test
+- task: DotNetCoreCLI@2
+  inputs:
+    command: publish
+    projects: week3/day5/RestaurantReviews/RestaurantReviews.WebApp
+    arguments: -o ../publish
+  displayName: dotnet publish

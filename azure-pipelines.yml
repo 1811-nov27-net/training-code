@@ -17,11 +17,19 @@ steps:
     cd week3/day5/RestaurantReviews
     dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+
 - script: |
     cd week3/day5/RestaurantReviews
-    dotnet test --configuration $(buildConfiguration)
+    dotnet test --configuration $(buildConfiguration) --logger trx
   displayName: 'dotnet test $(buildConfiguration)'
+
 - script: |
     cd week3/day5/RestaurantReviews
     dotnet publish RestaurantReviews.WebApp --configuration $(buildConfiguration) -o ../publish
   displayName: 'dotnet publish $(buildConfiguration)'
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testRunner: VSTest
+    testResultsFiles: '**/*.trx'

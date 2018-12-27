@@ -28,5 +28,5 @@ steps:
   inputs:
     command: publish
     projects: week3/day5/RestaurantReviews/RestaurantReviews.WebApp
-    arguments: -o ../publish
+    publishWebProjects: false
   displayName: dotnet publish

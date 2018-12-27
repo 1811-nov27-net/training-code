@@ -42,4 +42,4 @@ steps:
     azureSubscription: azure-outlook
     webAppName: escalona1811restaurants
     takeAppOfflineFlag: true
-    package: $(System.ArtifactStagingDirectory)/**/*.zip
+    package: '$(System.ArtifactStagingDirectory)/**/*.zip'

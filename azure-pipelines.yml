@@ -38,6 +38,6 @@ steps:
 
 - task: AzureRmWebAppDeployment@4
   inputs:
-    azureSubscription: outlook.com Azure Portal (all RGs)
+    azureSubscription: azure-outlook
     webAppName: escalona1811restaurants
     takeAppOfflineFlag: true

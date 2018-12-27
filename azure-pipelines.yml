@@ -18,15 +18,26 @@ steps:
     command: build
     projects: week3/day5/RestaurantReviews
   displayName: dotnet build
+
 - task: DotNetCoreCLI@2
   inputs:
     command: test
     projects: week3/day5/RestaurantReviews
     publishTestResults: true
   displayName: dotnet test
+
 - task: DotNetCoreCLI@2
   inputs:
     command: publish
     projects: week3/day5/RestaurantReviews/RestaurantReviews.WebApp
     publishWebProjects: false
+    arguments: --output $(Build.ArtifactStagingDirectory)
   displayName: dotnet publish
+
+- task: PublishBuildArtifacts@1
+
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    azureSubscription: outlook.com Azure Portal (all RGs)
+    webAppName: escalona1811restaurants
+    takeAppOfflineFlag: true

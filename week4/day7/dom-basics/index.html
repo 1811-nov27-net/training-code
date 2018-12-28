@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>DOM Basics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
+    <script src="main.js"></script>
+</head>
+<body>
+    <!-- one way to register event handlers: -->
+    <!-- HTML attributes pointing to functions defined -->
+    <h1 id="header" onclick="alertMe()">Hello DOM</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th id="col1">Col 1</th>
+                <th>Col 2</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            <tr id="row1">
+                <td id="cell1">A</td>
+                <td>B</td>
+            </tr>
+            <tr>
+                <td>C</td>
+                <td>D</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
